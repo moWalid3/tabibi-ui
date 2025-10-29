@@ -1,0 +1,35 @@
+/* Defines the slow, constant drift for the sparkle/dots */
+@keyframes subtle-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: -500px 500px, -300px 300px;
+  }
+}
+
+/* Defines the slow, pulsing glow for the aurora/nebula */
+@keyframes slow-pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@layer utilities {
+  .my-app-dark .dark\:bg-subtle-sky {
+    /* Ultra-Dark Fuchsia / Black base */
+    background-color: #0a000a; /* Near-black fuchsia */
+    background-image: linear-gradient(
+      180deg,
+      #1a001a 0%,
+      /* Very Dark Fuchsia/Purple */ #050005 50%,
+      /* Almost Black */ #1a001a 100% /* Very Dark Fuchsia/Purple */
+    ) !important;
+  }
+}

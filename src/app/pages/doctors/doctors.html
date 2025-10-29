@@ -1,0 +1,45 @@
+
+<div class="text-surface-900 dark:text-surface-0 font-bold text-3xl lg:text-4xl text-center leading-tight">Doctors</div>
+
+<div class="mb-4">
+  <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" text />
+  <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
+  <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" text />
+</div>
+
+<div class="card mb-5">
+  <p-table
+    [value]="doctors()"
+    [paginator]="true"
+    [rows]="10"
+    [first]="first"
+    [showCurrentPageReport]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    (onPage)="pageChange($event)"
+    [rowsPerPageOptions]="[10, 20, 50]"
+  >
+    <ng-template #header>
+      <tr>
+        <th style="width:25%">Id</th>
+        <th style="width:25%">Name</th>
+        <th style="width:25%">Email</th>
+        <th style="width:25%">created At</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-doctor>
+      <tr>
+        <td>{{ doctor.id }}</td>
+        <td>{{ doctor.name }}</td>
+        <td>{{ doctor.email }}</td>
+        <td>{{ doctor.createdAtUtc }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #paginatorleft>
+      <p-button type="button" icon="pi pi-plus" text />
+    </ng-template>
+    <ng-template #paginatorright>
+      <p-button type="button" icon="pi pi-cloud" text />
+    </ng-template>
+  </p-table>
+</div>

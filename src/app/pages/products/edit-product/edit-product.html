@@ -1,0 +1,90 @@
+<div class="w-80 mx-auto bg-primary-100 p-4 rounded-lg shadow-md">
+
+  <h2 class="text-center text-3xl mb-5">Update Product</h2>
+
+  <div class="card flex justify-center">
+    <form [formGroup]="updateProductForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full sm:w-56">
+
+      <div class="flex flex-col gap-1">
+        <input pInputText type="text" id="name" placeholder="Name" formControlName="name" [invalid]="isInvalid('name')" />
+        @if (isInvalid('name')) {
+          <p-message severity="error" size="small" variant="simple">Name is required.</p-message>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <input pInputText type="number" id="price" placeholder="Price" formControlName="price" [invalid]="isInvalid('price')" />
+        @if (isInvalid('price')) {
+          @if (updateProductForm.get('price')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Price is required.</p-message>
+          }
+          @if (updateProductForm.get('price')?.errors?.['min']) {
+            <p-message severity="error" size="small" variant="simple">Min price is 0.</p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <input pInputText type="number" id="rating" placeholder="Rating" formControlName="rating" [invalid]="isInvalid('rating')" />
+        @if (isInvalid('rating')) {
+          @if (updateProductForm.get('rating')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Rating is required.</p-message>
+          }
+          @if (updateProductForm.get('rating')?.errors?.['min']) {
+            <p-message severity="error" size="small" variant="simple">Min rating is 0.</p-message>
+          }
+          @if (updateProductForm.get('rating')?.errors?.['max']) {
+            <p-message severity="error" size="small" variant="simple">Max rating is 5.</p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+          <input pInputText type="number" id="quantity" placeholder="Quantity" formControlName="quantity" [invalid]="isInvalid('quantity')" />
+        @if (isInvalid('quantity')) {
+          @if (updateProductForm.get('quantity')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Quantity is required.</p-message>
+          }
+          @if (updateProductForm.get('quantity')?.errors?.['min']) {
+            <p-message severity="error" size="small" variant="simple">Min quantity is 0.</p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <input pInputText type="text" id="summary" placeholder="Summary" formControlName="summary" [invalid]="isInvalid('summary')" />
+        @if (isInvalid('summary')) {
+          <p-message severity="error" size="small" variant="simple">Summary is required.</p-message>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <input pInputText type="text" id="description" placeholder="Description" formControlName="description" [invalid]="isInvalid('description')" />
+        @if (isInvalid('description')) {
+          <p-message severity="error" size="small" variant="simple">Description is required.</p-message>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <p-fileupload (onSelect)="onUpload($event)" [auto]="true" mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload" name="demo[]" accept="image/*" maxFileSize="1048576" />
+        @if(imageUrl()) {
+          <div class="flex items-center gap-2">
+            <p-message severity="info" size="small" variant="simple">Image selected.</p-message>
+            <img [src]="imageUrl()" width="70" alt="">
+          </div>
+        }@else if(imageFile) {
+          <p-message severity="warn" size="small" variant="simple">{{ imageFile.name }}</p-message>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <p-select formControlName="categoryId" [options]="categories()" [invalid]="isInvalid('categoryId')" optionValue="id" optionLabel="name" placeholder="Select a Category" class="w-full md:w-56" />
+        @if (isInvalid('categoryId')) {
+          <p-message severity="error" size="small" variant="simple">Category is required.</p-message>
+        }
+      </div>
+
+      <button pButton severity="primary" type="submit"><span pButtonLabel>Submit</span></button>
+    </form>
+</div>
+</div>
