@@ -18,3 +18,7 @@ export interface ILoginResponse {
 export interface IRegisterResponse {
   message: string;
 }
+
+export interface IRefreshRequest {
+  refreshToken: string;
+}

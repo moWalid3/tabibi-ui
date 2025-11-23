@@ -1,165 +1,60 @@
-<!--
-<nav class="bg-gray-800">
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="flex shrink-0 items-center">
-          <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="h-8 w-auto" />
-        </div>
-        <div class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4">
-            <a routerLink="/products" routerLinkActive="bg-primary text-white" class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-primary-800 transition">Products</a>
-            <a routerLink="/categories" routerLinkActive="bg-primary text-white" class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-primary-800 transition">Categories</a>
-            @if(authService.token())
-            {
-              <a (click)="signout()" routerLinkActive="bg-primary text-white" class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-primary-800 transition">Signout</a>
-            }@else {
-              <a routerLink="/register" routerLinkActive="bg-primary text-white" class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-primary-800 transition">Register</a>
-              <a routerLink="/login" routerLinkActive="bg-primary text-white" class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-primary-800 transition">Login</a>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-
- -->
-
-<div class="">
-  <nav class="bg-surface-0 dark:bg-surface-900 border-b border-surface dark:border-transparent">
-    <div class="mx-auto px-6 md:px-12 lg:px-20">
-      <div class="flex h-16 justify-between">
-        <div class="flex">
-          <div class="flex shrink-0 items-center">
-            <!-- Logo -->
-            <img routerLink="/doctors" class="w-13 cursor-pointer" src="logo.png" alt="Tabibi Logo">
-          </div>
-
-          <!-- Desktop Navigation Links -->
-          <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-            <!-- <a routerLink="/products" routerLinkActive="border-primary-600! text-primary-600!" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:border-gray-600 dark:hover:text-gray-600 transition duration-150 ease-in-out">Dashboard</a> -->
-            <a routerLink="/doctors" routerLinkActive="border-primary-600! text-primary-600!" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:border-gray-600 dark:hover:text-gray-600 transition duration-150 ease-in-out">Doctors</a>
-            <a routerLink="/patients" routerLinkActive="border-primary-600! text-primary-600!" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:border-gray-600 dark:hover:text-gray-600 transition duration-150 ease-in-out">Patients</a>
-            <a routerLink="/clinics" routerLinkActive="border-primary-600! text-primary-600!" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:border-gray-600 dark:hover:text-gray-600 transition duration-150 ease-in-out">Clinics</a>
-          </div>
+<div class="sticky top-0 z-50">
+  <nav class="bg-white/80 dark:bg-surface-900/80 backdrop-blur-md border-b border-surface-200 dark:border-surface-800 transition-colors duration-300">
+    <div class="px-6 md:px-8 lg:px-10">
+      <div class="flex h-20 items-center justify-between">
+        
+        <!-- Left Side: Search (Optional) or Breadcrumbs -->
+        <div class="flex flex-1 items-center">
+            <div class="relative w-full max-w-xs hidden md:block group">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="pi pi-search text-surface-400 group-focus-within:text-primary-500 transition-colors"></i>
+                </div>
+                <input type="text" class="block w-full py-2.5 pl-10 pr-4 text-sm text-surface-900 border border-surface-200 rounded-full bg-surface-50 focus:ring-2 focus:ring-primary-100 focus:border-primary-500 dark:bg-surface-800 dark:border-surface-700 dark:placeholder-surface-400 dark:text-white dark:focus:ring-primary-900 dark:focus:border-primary-500 transition-all outline-none" placeholder="Search anything...">
+            </div>
         </div>
 
-        <div class="hidden sm:ml-6 sm:flex sm:items-center">
-          <!-- Notification Button -->
-          <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none transition duration-150 ease-in-out">
-            <span class="absolute -inset-1.5"></span>
-            <span class="sr-only">View notifications</span>
-            @if(authService.accessToken())
-            {
-              <!-- <a  routerLink="/login" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:border-gray-600 dark:hover:text-gray-600 transition duration-150 ease-in-out">Logout</a> -->
-              <p-button (click)="signout()" pTooltip="Logout" tooltipPosition="bottom" icon="pi pi-sign-out" styleClass="m-0 mr-3" [rounded]="true" size="small" severity="primary"/>
-            }
-            <p-button (onClick)="toggleDarkMode()" icon="pi pi-moon" styleClass="m-0" [rounded]="true" size="small" severity="primary" />
+        <!-- Right Side: Actions -->
+        <div class="flex items-center gap-4">
+          
+          <!-- Theme Toggle -->
+          <button 
+            (click)="toggleDarkMode()" 
+            class="w-10 h-10 rounded-full flex items-center justify-center text-surface-500 hover:text-primary-600 hover:bg-primary-50 dark:text-surface-400 dark:hover:text-primary-400 dark:hover:bg-surface-800 transition-all duration-200 focus:outline-none cursor-pointer"
+            pTooltip="{{ isDarkMode() ? 'Light Mode' : 'Dark Mode' }}"
+            tooltipPosition="bottom"
+            [tooltipStyleClass]="'text-xs'">
+            <i class="pi text-xl" [class]="isDarkMode() ? 'pi-sun' : 'pi-moon'"></i>
           </button>
 
-          <!-- Profile dropdown -->
-          <div class="relative ml-3">
-            <div>
-              <button
-                type="button"
-                class="relative flex rounded-full bg-white text-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none transition duration-150 ease-in-out"
-                id="user-menu-button"
-                (click)="toggleProfile()"
-                aria-expanded="false"
-                [attr.aria-expanded]="isProfileOpen().toString()"
-              >
-                <span class="absolute -inset-1.5"></span>
-                <span class="sr-only">Open user menu</span>
-                <img class="h-8 w-8 rounded-full shadow-md" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="User Profile">
-              </button>
-            </div>
-
-            @if (isProfileOpen()) {
-              <!-- Dropdown Menu Panel -->
-              <div
-                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-lg bg-white py-1 ring-1 ring-black/5 shadow-xl focus:outline-none transition-all duration-200"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-menu-button"
-                tabindex="-1"
-              >
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition duration-100" role="menuitem" tabindex="-1">Your Profile</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition duration-100" role="menuitem" tabindex="-1">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition duration-100" role="menuitem" tabindex="-1">Sign out</a>
-              </div>
-            }
-          </div>
-        </div>
-
-        <!-- Mobile menu button -->
-        <div class="-mr-2 flex items-center sm:hidden">
-          <button
-            type="button"
-            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset transition duration-150 ease-in-out"
-            aria-controls="mobile-menu"
-            (click)="toggleMenu()"
-            aria-expanded="false"
-            [attr.aria-expanded]="isMobileOpen().toString()"
-          >
-            <span class="absolute -inset-0.5"></span>
-            <span class="sr-only">Open main menu</span>
-
-            <!-- Menu closed icon (Hamburger) -->
-            @if (!isMobileOpen()) {
-              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-              </svg>
-            }
-
-            <!-- Menu open icon (X) -->
-            @if (isMobileOpen()) {
-              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-              </svg>
-            }
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile menu, controlled by isMobileOpen() signal -->
-    @if (isMobileOpen()) {
-      <div class="sm:hidden border-t border-gray-200" id="mobile-menu">
-        <!-- Mobile Links -->
-        <div class="space-y-1 pt-2 pb-3">
-          <a href="#" class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pr-4 pl-3 text-base font-medium text-indigo-700">Dashboard</a>
-          <a href="#" class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Team</a>
-          <a href="#" class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Projects</a>
-          <a href="#" class="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Calendar</a>
-        </div>
-
-        <!-- Mobile Profile Section -->
-        <div class="border-t border-gray-200 pt-4 pb-3">
-          <div class="flex items-center px-4">
-            <div class="shrink-0">
-              <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="User Profile">
-            </div>
-            <div class="ml-3">
-              <div class="text-base font-medium text-gray-800">Tom Cook</div>
-              <div class="text-sm font-medium text-gray-500">tom@example.com</div>
-            </div>
-            <button type="button" class="relative ml-auto shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">View notifications</span>
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"></path>
-              </svg>
+          <!-- Logout Button -->
+          @if(authService.accessToken()) {
+            <button 
+              (click)="signout()" 
+              class="w-10 h-10 rounded-full flex items-center justify-center text-surface-500 hover:text-red-600 hover:bg-red-50 dark:text-surface-400 dark:hover:text-red-400 dark:hover:bg-surface-800 transition-all duration-200 focus:outline-none cursor-pointer"
+              pTooltip="Logout"
+              tooltipPosition="bottom"
+              [tooltipStyleClass]="'text-xs'">
+              <i class="pi pi-sign-out text-xl"></i>
             </button>
+          }
+
+          <!-- Divider -->
+          <div class="h-8 w-px bg-surface-200 dark:bg-surface-700 mx-2"></div>
+
+          <!-- Profile Image (No Dropdown) -->
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <img class="h-10 w-10 rounded-full object-cover border-2 border-white dark:border-surface-700 shadow-sm" src="admin.jpeg" alt="User Profile">
+              <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-surface-900 rounded-full"></div>
+            </div>
+            <div class="hidden md:block">
+              <p class="text-sm font-semibold text-surface-900 dark:text-surface-0 leading-none">Admin User</p>
+              <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">Administrator</p>
+            </div>
           </div>
-          <div class="mt-3 space-y-1">
-            <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Your Profile</a>
-            <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Settings</a>
-            <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Sign out</a>
-          </div>
+
         </div>
       </div>
-    }
+    </div>
   </nav>
 </div>
-

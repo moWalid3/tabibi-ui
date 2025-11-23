@@ -3,8 +3,9 @@ export interface IPatientDto {
   name: string;
   email: string;
   avatarUrl: string | null;
-  Gender: number | null;
+  gender: number;
   dateOfBirth: string | null;
+  city: string | null;
   createdAtUtc: string;
   updatedAtUtc: string | null;
 }

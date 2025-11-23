@@ -1,0 +1,101 @@
+<div class="px-6 pb-6 pt-0 max-w-3xl mx-auto">
+  <div class="mb-8">
+    <p-button 
+      label="Back to Departments" 
+      icon="pi pi-arrow-left" 
+      (onClick)="goBack()" 
+      styleClass="mb-4" 
+      [text]="true">
+    </p-button>
+    <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">
+      {{ isEditMode() ? 'Edit Department' : 'Create New Department' }}
+    </h1>
+  </div>
+
+  <div class="bg-white dark:bg-surface-900 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-700 p-6">
+    <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- Name Input -->
+      <div class="flex flex-col gap-2">
+        <label for="name" class="font-medium text-surface-900 dark:text-surface-0">Department Name</label>
+        <input 
+          pInputText 
+          id="name" 
+          formControlName="name" 
+          placeholder="Enter department name" 
+          class="w-full" 
+          [ngClass]="{'ng-invalid ng-dirty': departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched}"
+        />
+        <small *ngIf="departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched" class="text-red-500">
+          Name is required.
+        </small>
+      </div>
+
+      <!-- Description Input -->
+      <div class="flex flex-col gap-2">
+        <label for="description" class="font-medium text-surface-900 dark:text-surface-0">Description</label>
+        <textarea 
+          pTextarea 
+          id="description" 
+          formControlName="description" 
+          rows="4" 
+          placeholder="Enter department description" 
+          class="w-full">
+        </textarea>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium text-surface-900 dark:text-surface-0">Department Image</label>
+        
+        <!-- Current Image Preview (Edit Mode) -->
+        <div *ngIf="currentImageUrl() && !imagePreview()" class="mb-2">
+          <p class="text-sm text-surface-500 mb-2">Current Image:</p>
+          <p-image [src]="currentImageUrl()!" alt="Current Image" [preview]="true" width="150" class="rounded-lg border border-surface-200"></p-image>
+        </div>
+
+        <!-- New Image Preview -->
+        <div *ngIf="imagePreview()" class="mb-2">
+          <p class="text-sm text-surface-500 mb-2">New Image Preview:</p>
+          <p-image [src]="imagePreview()!" alt="Preview" [preview]="true" width="150" class="rounded-lg border border-surface-200"></p-image>
+        </div>
+
+        <p-fileUpload 
+          mode="basic" 
+          chooseLabel="Choose Image" 
+          accept="image/*" 
+          [maxFileSize]="500000" 
+          (onSelect)="onFileSelect($event)"
+          [auto]="true"
+          chooseIcon="pi pi-upload"
+          styleClass="w-full md:w-auto">
+        </p-fileUpload>
+        <small class="text-surface-500">Supported formats: JPG, PNG. Max size: 500KB.</small>
+        
+        <p-button 
+          *ngIf="selectedFile" 
+          label="Clear Selection" 
+          icon="pi pi-times" 
+          (onClick)="onClearFile()" 
+          severity="secondary" 
+          [text]="true" 
+          size="small"
+          class="mt-2">
+        </p-button>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="pt-4 flex justify-end">
+        <p-button 
+          type="submit" 
+          [label]="isEditMode() ? 'Update Department' : 'Create Department'" 
+          [icon]="loading() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+          [loading]="loading()" 
+          [disabled]="departmentForm.invalid || loading()">
+        </p-button>
+      </div>
+
+    </form>
+  </div>
+</div>
+<p-toast></p-toast>

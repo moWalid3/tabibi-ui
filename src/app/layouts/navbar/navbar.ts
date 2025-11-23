@@ -14,31 +14,34 @@ export class Navbar {
   authService = inject(Auth);
   private router = inject(Router);
 
+  isDarkMode = signal<boolean>(false);
+
+  constructor() {
+    // Initialize dark mode from local storage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode.set(true);
+      document.querySelector('html')?.classList.add('my-app-dark');
+    } else {
+      this.isDarkMode.set(false);
+      document.querySelector('html')?.classList.remove('my-app-dark');
+    }
+  }
+
   signout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   toggleDarkMode() {
+    this.isDarkMode.update(val => !val);
     const element = document.querySelector('html');
-    element?.classList.toggle('my-app-dark');
-  }
-
-  /** Signal for controlling the mobile menu open/close state. */
-  isMobileOpen = signal(false);
-
-  /** Signal for controlling the profile dropdown open/close state. */
-  isProfileOpen = signal(false);
-
-  /** Toggles the mobile menu state and closes the profile dropdown. */
-  toggleMenu() {
-    this.isMobileOpen.update(value => !value);
-    this.isProfileOpen.set(false); // Close profile dropdown when mobile menu is opened/closed
-  }
-
-  /** Toggles the profile dropdown state and closes the mobile menu. */
-  toggleProfile() {
-    this.isProfileOpen.update(value => !value);
-    this.isMobileOpen.set(false); // Close mobile menu when profile dropdown is opened/closed
+    
+    if (this.isDarkMode()) {
+      element?.classList.add('my-app-dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      element?.classList.remove('my-app-dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 }

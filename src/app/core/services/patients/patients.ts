@@ -4,18 +4,26 @@ import { inject } from '@angular/core/primitives/di';
 import { IPatientDto } from '../../models/patients/patient.model';
 import { IResponseCollection } from '../../models/common/responseCollection.model';
 
+import { environment } from '../../../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class Patients {
   private http = inject(HttpClient);
-  private baseUrl = 'https://tabibi.runasp.net/patients';
+  private baseUrl = environment.apiUrl;
 
-  getAllPatients() {
-    return this.http.get<IResponseCollection<IPatientDto>>(this.baseUrl, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
+  getAllPatients(params?: any) {
+    return this.http.get<IResponseCollection<IPatientDto>>(`${this.baseUrl}/admin/patients`, {
+      params: params
     });
+  }
+
+  getCities() {
+    return this.http.get<any[]>(`${this.baseUrl}/cities`);
+  }
+
+  deletePatient(id: string) {
+    return this.http.delete(`${this.baseUrl}/admin/patients/${id}`);
   }
 }
