@@ -12,12 +12,12 @@
       <p-inputicon styleClass="pi pi-search" />
       <input pInputText type="text" [ngModel]="searchValue()" (input)="onSearch($any($event.target).value)" placeholder="Search by name..." class="w-full" />
     </p-iconfield>
-    
-    <p-select 
-      [options]="cities()" 
-      [(ngModel)]="selectedCity" 
-      optionLabel="name" 
-      placeholder="Select City" 
+
+    <p-select
+      [options]="cities()"
+      [(ngModel)]="selectedCity"
+      optionLabel="name"
+      placeholder="Select City"
       (onChange)="reloadTable(dt)"
       [showClear]="true"
       styleClass="w-full"
@@ -25,23 +25,23 @@
       filterBy="name">
     </p-select>
 
-    <p-select 
-      [options]="genderOptions" 
-      [(ngModel)]="selectedGender" 
-      optionLabel="label" 
+    <p-select
+      [options]="genderOptions"
+      [(ngModel)]="selectedGender"
+      optionLabel="label"
       optionValue="value"
-      placeholder="Select Gender" 
+      placeholder="Select Gender"
       (onChange)="reloadTable(dt)"
       [showClear]="true"
       styleClass="w-full">
     </p-select>
 
-    <p-select 
-      [options]="emailConfirmedOptions" 
-      [(ngModel)]="selectedEmailConfirmed" 
-      optionLabel="label" 
+    <p-select
+      [options]="emailConfirmedOptions"
+      [(ngModel)]="selectedEmailConfirmed"
+      optionLabel="label"
       optionValue="value"
-      placeholder="Email Confirmed" 
+      placeholder="Email Confirmed"
       (onChange)="reloadTable(dt)"
       [showClear]="true"
       styleClass="w-full">
@@ -50,12 +50,12 @@
 
   <!-- Custom Sort -->
   <div class="flex flex-col md:flex-row gap-4 mb-4 items-center">
-    <p-select 
-      [options]="sortOptions" 
-      [(ngModel)]="selectedSortField" 
-      optionLabel="label" 
+    <p-select
+      [options]="sortOptions"
+      [(ngModel)]="selectedSortField"
+      optionLabel="label"
       optionValue="value"
-      placeholder="Sort By" 
+      placeholder="Sort By"
       [showClear]="true"
       styleClass="w-full md:w-60">
     </p-select>
@@ -71,14 +71,17 @@
   </div>
 
   <!-- Active Sorts -->
-  <div class="flex flex-wrap gap-2 mb-4" *ngIf="activeSorts().length > 0">
-    <p-chip 
-      *ngFor="let sort of activeSorts()" 
-      [label]="sort.label + (sort.desc ? ' (Desc)' : ' (Asc)')" 
-      [removable]="true" 
-      (onRemove)="removeSort(sort.field)">
-    </p-chip>
-  </div>
+  @if (activeSorts().length > 0) {
+    <div class="flex flex-wrap gap-2 mb-4">
+      @for (sort of activeSorts(); track sort) {
+        <p-chip
+          [label]="sort.label + (sort.desc ? ' (Desc)' : ' (Asc)')"
+          [removable]="true"
+          (onRemove)="removeSort(sort.field)">
+        </p-chip>
+      }
+    </div>
+  }
 
   <p-table
     #dt
@@ -95,7 +98,7 @@
     [rowsPerPageOptions]="[10, 20, 50]"
     styleClass="p-datatable-gridlines border border-surface-200 dark:border-surface-700 rounded-xl overflow-hidden shadow-sm"
     paginatorDropdownAppendTo="body"
-  >
+    >
     <ng-template pTemplate="header">
       <tr>
         <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Avatar</th>

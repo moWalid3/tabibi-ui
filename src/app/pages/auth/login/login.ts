@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 import { IUserLoginDto } from '../../../core/models/auth.model';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, InputTextModule, ButtonModule, MessageModule, IconFieldModule, InputIconModule, FormsModule],
+  imports: [InputTextModule, ButtonModule, MessageModule, IconFieldModule, InputIconModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

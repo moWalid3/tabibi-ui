@@ -1,5 +1,5 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -16,14 +16,13 @@ import { ICityDto } from '../../core/models/cities/city.model';
   styleUrl: './cities.scss',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     TableModule,
     ButtonModule,
     InputTextModule,
     ConfirmDialogModule,
     ToastModule
-  ],
+],
   providers: [ConfirmationService, MessageService]
 })
 export class Cities implements OnInit {

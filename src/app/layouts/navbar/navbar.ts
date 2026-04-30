@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router } from '@angular/router';
 import { Auth } from '../../core/services/auth';
 import { ButtonModule } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive, ButtonModule, Tooltip],
+  imports: [ButtonModule, Tooltip],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })

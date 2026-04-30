@@ -1,5 +1,5 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -11,7 +11,7 @@ import { IDashboardSummary } from '../../core/models/dashboard/dashboard.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, ButtonModule, FormsModule, TagModule],
+  imports: [CardModule, TableModule, ButtonModule, FormsModule, TagModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
