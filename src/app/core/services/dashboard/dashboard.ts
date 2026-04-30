@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IDashboardSummary } from '../../models/dashboard/dashboard.model';
+import { IAnalyticsDashboard } from '../../models/dashboard/analytics.model';
 
 import { environment } from '../../../../environments/environment';
 
@@ -10,9 +10,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class DashboardService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private analyticsApiUrl = environment.analyticsApiUrl;
 
-  getSummary(): Observable<IDashboardSummary> {
-    return this.http.get<IDashboardSummary>(`${this.apiUrl}/admin/dashboard/summary`);
+  getSummary(): Observable<IAnalyticsDashboard> {
+    return this.http.get<IAnalyticsDashboard>(`${this.analyticsApiUrl}/api/analytics/admin-dashboard`);
   }
 }

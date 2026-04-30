@@ -1,172 +1,386 @@
-<div class="grid grid-cols-12 gap-6 animate-fade-in">
-  <!-- Welcome Banner -->
-  <div class="col-span-12">
-    <div class="bg-gradient-to-r from-blue-600 to-cyan-500 shadow-lg rounded-2xl p-8 relative overflow-hidden text-white">
-      <div class="relative z-10">
-        <h2 class="text-3xl font-bold mb-2">Welcome Back, Admin! 👋</h2>
-        <p class="text-blue-100 text-lg max-w-2xl">
-          Here's what's happening in your clinic today. You have <span class="font-bold text-white">{{ stats().totalPendingDoctors }}</span> pending doctor requests to review.
-        </p>
-      </div>
-      <div class="absolute right-0 bottom-0 opacity-20 transform translate-y-1/4 translate-x-1/4">
-        <i class="pi pi-chart-line" style="font-size: 15rem"></i>
-      </div>
-    </div>
+@if (loading()) {
+  <div class="flex items-center justify-center min-h-[50vh]">
+    <i class="pi pi-spin pi-spinner text-4xl text-blue-500"></i>
   </div>
-
-  <!-- Stats Cards -->
-  <div class="col-span-12 md:col-span-6 lg:col-span-3">
-    <div class="bg-white dark:bg-surface-900 shadow-md rounded-2xl p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Total Doctors</span>
-          <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ stats().totalDoctors }}</span>
-        </div>
-        <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-          <i class="pi pi-id-card text-xl"></i>
-        </div>
-      </div>
-      <div class="w-full bg-surface-100 dark:bg-surface-800 rounded-full h-2">
-        <div class="bg-blue-500 h-2 rounded-full" style="width: 70%"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-span-12 md:col-span-6 lg:col-span-3">
-    <div class="bg-white dark:bg-surface-900 shadow-md rounded-2xl p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Pending Requests</span>
-          <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ stats().totalPendingDoctors }}</span>
-        </div>
-        <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
-          <i class="pi pi-clock text-xl"></i>
-        </div>
-      </div>
-      <div class="w-full bg-surface-100 dark:bg-surface-800 rounded-full h-2">
-        <div class="bg-orange-500 h-2 rounded-full" [style.width.%]="(stats().totalPendingDoctors / (stats().totalDoctors || 1)) * 100"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-span-12 md:col-span-6 lg:col-span-3">
-    <div class="bg-white dark:bg-surface-900 shadow-md rounded-2xl p-6 border-l-4 border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Approved Doctors</span>
-          <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ stats().totalApprovedDoctors }}</span>
-        </div>
-        <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
-          <i class="pi pi-check-circle text-xl"></i>
-        </div>
-      </div>
-      <div class="w-full bg-surface-100 dark:bg-surface-800 rounded-full h-2">
-        <div class="bg-green-500 h-2 rounded-full" [style.width.%]="(stats().totalApprovedDoctors / (stats().totalDoctors || 1)) * 100"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-span-12 md:col-span-6 lg:col-span-3">
-    <div class="bg-white dark:bg-surface-900 shadow-md rounded-2xl p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Total Patients</span>
-          <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ stats().totalPatients }}</span>
-        </div>
-        <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
-          <i class="pi pi-users text-xl"></i>
-        </div>
-      </div>
-      <div class="w-full bg-surface-100 dark:bg-surface-800 rounded-full h-2">
-        <div class="bg-purple-500 h-2 rounded-full" style="width: 45%"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Activity & Appointments -->
-  <div class="col-span-12 lg:col-span-8">
-    <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">Recent Appointments</h3>
-        <p-button label="View All" icon="pi pi-arrow-right" iconPos="right" [text]="true" severity="secondary"></p-button>
-      </div>
+} @else {
+  @if (data(); as dash) {
+    <div class="grid grid-cols-12 gap-6 animate-fade-in pb-8">
       
-      <p-table [value]="appointments()" [tableStyle]="{ 'min-width': '40rem' }" styleClass="p-datatable-sm">
-        <ng-template pTemplate="header">
-            <tr>
-                <th class="bg-surface-50 dark:bg-surface-800/50 text-surface-600 dark:text-surface-300 font-semibold border-b border-surface-200 dark:border-surface-700">Patient</th>
-                <th class="bg-surface-50 dark:bg-surface-800/50 text-surface-600 dark:text-surface-300 font-semibold border-b border-surface-200 dark:border-surface-700">Doctor</th>
-                <th class="bg-surface-50 dark:bg-surface-800/50 text-surface-600 dark:text-surface-300 font-semibold border-b border-surface-200 dark:border-surface-700">Time</th>
-                <th class="bg-surface-50 dark:bg-surface-800/50 text-surface-600 dark:text-surface-300 font-semibold border-b border-surface-200 dark:border-surface-700">Status</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-appointment>
-            <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors">
-                <td class="font-medium text-surface-900 dark:text-surface-0">
-                  <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-bold">
-                      {{ appointment.patient.charAt(0) }}
+      <!-- Overview Cards -->
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-3">
+        <div class="bg-white/80 dark:bg-surface-900/80 backdrop-blur-md shadow-lg rounded-2xl p-6 pb-16 border-l-4 border-blue-500 hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative group min-h-[170px] flex flex-col">
+          <div class="flex justify-between items-start z-10 relative">
+            <div>
+              <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Doctors</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ dash.overview.doctors.total }}</span>
+                <span class="text-sm font-semibold" [ngClass]="getPercentageColor(dash.overview.doctors.percentage)">
+                  <i class="pi" [ngClass]="dash.overview.doctors.percentage >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+                  {{ Math.abs(dash.overview.doctors.percentage) }}%
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-inner group-hover:scale-110 transition-transform">
+                <i class="pi pi-id-card text-xl"></i>
+              </div>
+              <span class="text-xs text-surface-400 dark:text-surface-500">in last 7 Days</span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-16 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <p-chart type="line" [data]="generateOverviewChart(dash.overview.doctors.chartData, '#3b82f6')" [options]="overviewChartOptions" height="100%"></p-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-3">
+        <div class="bg-white/80 dark:bg-surface-900/80 backdrop-blur-md shadow-lg rounded-2xl p-6 pb-16 border-l-4 border-orange-500 hover:shadow-orange-500/20 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative group min-h-[170px] flex flex-col">
+          <div class="flex justify-between items-start z-10 relative">
+            <div>
+              <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Patients</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ dash.overview.patients.total }}</span>
+                <span class="text-sm font-semibold" [ngClass]="getPercentageColor(dash.overview.patients.percentage)">
+                  <i class="pi" [ngClass]="dash.overview.patients.percentage >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+                  {{ Math.abs(dash.overview.patients.percentage) }}%
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center text-orange-600 dark:text-orange-400 shadow-inner group-hover:scale-110 transition-transform">
+                <i class="pi pi-users text-xl"></i>
+              </div>
+              <span class="text-xs text-surface-400 dark:text-surface-500">in last 7 Days</span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-16 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <p-chart type="line" [data]="generateOverviewChart(dash.overview.patients.chartData, '#f97316')" [options]="overviewChartOptions" height="100%"></p-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-3">
+        <div class="bg-white/80 dark:bg-surface-900/80 backdrop-blur-md shadow-lg rounded-2xl p-6 pb-16 border-l-4 border-purple-500 hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative group min-h-[170px] flex flex-col">
+          <div class="flex justify-between items-start z-10 relative">
+            <div>
+              <span class="block text-surface-500 dark:text-surface-400 font-medium mb-1">Appointments</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ dash.overview.appointments.total }}</span>
+                <span class="text-sm font-semibold" [ngClass]="getPercentageColor(dash.overview.appointments.percentage)">
+                  <i class="pi" [ngClass]="dash.overview.appointments.percentage >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+                  {{ Math.abs(dash.overview.appointments.percentage) }}%
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-inner group-hover:scale-110 transition-transform">
+                <i class="pi pi-calendar text-xl"></i>
+              </div>
+              <span class="text-xs text-surface-400 dark:text-surface-500">in last 7 Days</span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-16 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <p-chart type="line" [data]="generateOverviewChart(dash.overview.appointments.chartData, '#a855f7')" [options]="overviewChartOptions" height="100%"></p-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-3">
+        <div class="bg-gradient-to-br from-green-500 to-emerald-700 shadow-lg shadow-green-500/30 rounded-2xl p-6 pb-16 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative group text-white min-h-[170px] flex flex-col">
+          <div class="absolute right-0 bottom-0 opacity-20 transform translate-y-1/4 translate-x-1/4 group-hover:scale-110 transition-transform duration-500">
+            <i class="pi pi-chart-line" style="font-size: 10rem"></i>
+          </div>
+          <div class="flex justify-between items-start z-10 relative">
+            <div>
+              <span class="block text-green-100 font-medium mb-1">Revenue</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold">${{ (dash.overview.revenue.total / 1000) | number:'1.2-2' }}</span>
+                <span class="text-sm font-semibold text-white bg-white/20 px-2 py-0.5 rounded-full">
+                  <i class="pi" [ngClass]="dash.overview.revenue.percentage >= 0 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+                  {{ Math.abs(dash.overview.revenue.percentage) }}%
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm shadow-inner group-hover:scale-110 transition-transform">
+                <i class="pi pi-wallet text-xl"></i>
+              </div>
+              <span class="text-xs text-white/70">in last 7 Days</span>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-16 w-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <p-chart type="line" [data]="generateOverviewChart(dash.overview.revenue.chartData, '#ffffff')" [options]="revenueOverviewChartOptions" height="100%"></p-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
+          <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-6">Revenue By Department</h3>
+          <div class="flex justify-center items-center h-[300px]">
+            <p-chart type="doughnut" [data]="revenuePieData" [options]="revenuePieOptions" height="100%" width="100%"></p-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700 flex flex-col items-center">
+          <div class="flex gap-5 flex-col items-start justify-between items-center w-full mb-2">
+            <h3 class="text-lg font-bold text-surface-900 dark:text-surface-0">Top Departments</h3>
+            <div class="flex mx-auto bg-surface-100 dark:bg-surface-800/80 rounded-xl p-1 shadow-inner">
+              <button (click)="topDepartmentsTab.set('daily')" [class.bg-white]="topDepartmentsTab() === 'daily'" [class.dark:bg-surface-700]="topDepartmentsTab() === 'daily'" [class.shadow]="topDepartmentsTab() === 'daily'" [class.text-blue-600]="topDepartmentsTab() === 'daily'" [class.dark:text-blue-400]="topDepartmentsTab() === 'daily'" [class.text-surface-500]="topDepartmentsTab() !== 'daily'" class="px-2 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Daily</button>
+              <button (click)="topDepartmentsTab.set('weekly')" [class.bg-white]="topDepartmentsTab() === 'weekly'" [class.dark:bg-surface-700]="topDepartmentsTab() === 'weekly'" [class.shadow]="topDepartmentsTab() === 'weekly'" [class.text-blue-600]="topDepartmentsTab() === 'weekly'" [class.dark:text-blue-400]="topDepartmentsTab() === 'weekly'" [class.text-surface-500]="topDepartmentsTab() !== 'weekly'" class="px-2 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Weekly</button>
+              <button (click)="topDepartmentsTab.set('monthly')" [class.bg-white]="topDepartmentsTab() === 'monthly'" [class.dark:bg-surface-700]="topDepartmentsTab() === 'monthly'" [class.shadow]="topDepartmentsTab() === 'monthly'" [class.text-blue-600]="topDepartmentsTab() === 'monthly'" [class.dark:text-blue-400]="topDepartmentsTab() === 'monthly'" [class.text-surface-500]="topDepartmentsTab() !== 'monthly'" class="px-2 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Monthly</button>
+            </div>
+          </div>
+          
+          <div class="flex-1 w-full flex justify-center items-center relative min-h-[300px]">
+            <div class="w-full h-full max-w-[260px] max-h-[260px] relative">
+              <p-chart type="doughnut" [data]="topDepartmentsChartData()" [options]="topDepartmentsChartOptions" height="100%" width="100%"></p-chart>
+              <!-- Center Text -->
+              <div class="absolute inset-0 flex flex-col justify-center items-center pointer-events-none mt-2">
+                <span class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ dash.topDepartments[topDepartmentsTab()].totalPeople }}</span>
+                <span class="text-sm text-surface-500 font-medium">Total Patients</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Rated Doctors -->
+      <div class="col-span-12 xl:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
+          <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-6">Top Rated Doctors</h3>
+          
+          <div class="space-y-4">
+            @for (doctor of dash.topRatedDoctors; track doctor.Id; let i = $index) {
+              <div class="flex items-center justify-between group p-2 hover:bg-surface-50 dark:hover:bg-surface-800/50 rounded-xl transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-8 text-center font-bold text-surface-400 dark:text-surface-600 group-hover:text-yellow-500 transition-colors">#{{ i + 1 }}</div>
+                  
+                  <div class="relative">
+                    <p-avatar [image]="doctor.img || 'https://ui-avatars.com/api/?name=' + doctor.Name" size="large" shape="circle" styleClass="shadow-sm border-2 border-white dark:border-surface-800"></p-avatar>
+                    <div class="absolute -bottom-1 -right-1 bg-yellow-400 text-white text-[10px] font-bold px-1 rounded-sm shadow-sm flex items-center border border-white dark:border-surface-800">
+                      <i class="pi pi-star-fill text-[8px] mr-0.5"></i> {{ doctor.rate | number:'1.0-1' }}
                     </div>
-                    {{ appointment.patient }}
+                  </div>
+                  
+                  <div>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize">Dr. {{ doctor.Name }}</h4>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ doctor.departmentName }}</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-2 text-surface-500 dark:text-surface-400 bg-surface-100 dark:bg-surface-800 px-3 py-1.5 rounded-lg">
+                  <i class="pi pi-comments text-xs"></i>
+                  <span class="text-xs font-semibold">{{ doctor.reviewsCount }} Reviews</span>
+                </div>
+              </div>
+              
+              @if (i < dash.topRatedDoctors.length - 1) {
+                <div class="border-b border-surface-100 dark:border-surface-800"></div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Reviews -->
+      <div class="col-span-12 xl:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700 flex flex-col">
+          <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-6">Recent Reviews</h3>
+          <div class="space-y-4 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+            @for (review of dash.recentReviews; track review) {
+              <div class="p-4 bg-surface-50 dark:bg-surface-800/50 rounded-xl border border-surface-100 dark:border-surface-800 hover:shadow-sm transition-shadow">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-3">
+                    <p-avatar [image]="review.img || 'https://ui-avatars.com/api/?name=' + review.patientName" size="large" shape="circle" styleClass="shadow-sm"></p-avatar>
+                    <div>
+                      <h4 class="font-bold text-sm text-surface-900 dark:text-surface-0">{{ review.patientName }}</h4>
+                      <span class="text-xs text-surface-500">{{ review.date | date:'mediumDate' }}</span>
+                    </div>
+                  </div>
+                  <p-rating [ngModel]="review.Rating" [readonly]="true" [stars]="5" class="scale-75 origin-top-right">
+                    <ng-template pTemplate="onicon">
+                      <i class="pi pi-star-fill text-yellow-400 text-xl"></i>
+                    </ng-template>
+                    <ng-template pTemplate="officon">
+                      <i class="pi pi-star text-surface-300 dark:text-surface-600 text-xl"></i>
+                    </ng-template>
+                  </p-rating>
+                </div>
+                <p class="text-surface-600 dark:text-surface-300 text-sm mt-2 italic">"{{ review.reviewText }}"</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Patients -->
+      <div class="col-span-12 xl:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
+          <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-6">Top Patients</h3>
+          
+          <div class="space-y-4">
+            @for (patient of dash.topPatients; track patient.Id; let i = $index) {
+              <div class="flex items-center justify-between group p-2 hover:bg-surface-50 dark:hover:bg-surface-800/50 rounded-xl transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-8 text-center font-bold text-surface-400 dark:text-surface-600 group-hover:text-blue-500 transition-colors">#{{ i + 1 }}</div>
+                  <p-avatar [image]="patient.img || 'https://ui-avatars.com/api/?name=' + patient.Name" size="large" shape="circle" styleClass="shadow-sm"></p-avatar>
+                  <div>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 mb-1">{{ patient.Name }}</h4>
+                    <div class="font-semibold text-[11px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-md flex items-center gap-1 w-fit">
+                      <i class="pi pi-calendar text-[10px]"></i>
+                      {{ patient.appointments }} Appointments
+                    </div>
+                  </div>
+                </div>
+                <div class="font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1 rounded-lg">
+                  ${{ patient.totalPaid | number }}
+                </div>
+              </div>
+              @if (i < dash.topPatients.length - 1) {
+                <div class="border-b border-surface-100 dark:border-surface-800"></div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Doctors By Revenue Row -->
+      <div class="col-span-12 xl:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
+          <div class="flex gap-3 flex-col items-start justify-between mb-4">
+            <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">Top Doctors By Revenue</h3>
+            <div class="flex mx-auto bg-surface-100 dark:bg-surface-800/80 rounded-xl p-1 shadow-inner relative z-10">
+              <button (click)="topDoctorsRevenueTab.set('weekly')" [class.bg-white]="topDoctorsRevenueTab() === 'weekly'" [class.dark:bg-surface-700]="topDoctorsRevenueTab() === 'weekly'" [class.shadow]="topDoctorsRevenueTab() === 'weekly'" [class.text-blue-600]="topDoctorsRevenueTab() === 'weekly'" [class.dark:text-blue-400]="topDoctorsRevenueTab() === 'weekly'" [class.text-surface-500]="topDoctorsRevenueTab() !== 'weekly'" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Weekly</button>
+              <button (click)="topDoctorsRevenueTab.set('monthly')" [class.bg-white]="topDoctorsRevenueTab() === 'monthly'" [class.dark:bg-surface-700]="topDoctorsRevenueTab() === 'monthly'" [class.shadow]="topDoctorsRevenueTab() === 'monthly'" [class.text-blue-600]="topDoctorsRevenueTab() === 'monthly'" [class.dark:text-blue-400]="topDoctorsRevenueTab() === 'monthly'" [class.text-surface-500]="topDoctorsRevenueTab() !== 'monthly'" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Monthly</button>
+              <button (click)="topDoctorsRevenueTab.set('yearly')" [class.bg-white]="topDoctorsRevenueTab() === 'yearly'" [class.dark:bg-surface-700]="topDoctorsRevenueTab() === 'yearly'" [class.shadow]="topDoctorsRevenueTab() === 'yearly'" [class.text-blue-600]="topDoctorsRevenueTab() === 'yearly'" [class.dark:text-blue-400]="topDoctorsRevenueTab() === 'yearly'" [class.text-surface-500]="topDoctorsRevenueTab() !== 'yearly'" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 hover:text-blue-500">Yearly</button>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            @for (doctor of dash.topDoctorsByRevenue[topDoctorsRevenueTab()]; track doctor.Id; let i = $index) {
+              <div class="flex items-center justify-between group p-2 hover:bg-surface-50 dark:hover:bg-surface-800/50 rounded-xl transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-8 text-center font-bold text-surface-400 dark:text-surface-600 group-hover:text-blue-500 transition-colors">#{{ i + 1 }}</div>
+                  
+                  <p-avatar [image]="doctor.img || 'https://ui-avatars.com/api/?name=' + doctor.Name" size="large" shape="circle" styleClass="shadow-sm border border-surface-100 dark:border-surface-700"></p-avatar>
+                  
+                  <div>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize">Dr. {{ doctor.Name }}</h4>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ doctor.departmentName }}</p>
+                  </div>
+                </div>
+                
+                <div class="font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg">
+                  ${{ doctor.revenue | number }}
+                </div>
+              </div>
+              
+              @if (i < dash.topDoctorsByRevenue[topDoctorsRevenueTab()].length - 1) {
+                <div class="border-b border-surface-100 dark:border-surface-800"></div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Appointments -->
+      <div class="col-span-12 2xl:col-span-8">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">Today's Appointments</h3>
+            <p-button label="View All" icon="pi pi-arrow-right" iconPos="right" [text]="true" severity="secondary"></p-button>
+          </div>
+          
+          <p-table [value]="dash.todayAppointments" [tableStyle]="{ 'min-width': '40rem' }" styleClass="p-datatable-sm p-datatable-gridlines-none">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="bg-blue-600 dark:bg-blue-700 text-white font-semibold border-none first:rounded-tl-lg">Patient</th>
+                <th class="bg-blue-600 dark:bg-blue-700 text-white font-semibold border-none">Doctor</th>
+                <th class="bg-blue-600 dark:bg-blue-700 text-white font-semibold border-none">Time</th>
+                <th class="bg-blue-600 dark:bg-blue-700 text-white font-semibold border-none text-right">Price</th>
+                <th class="bg-blue-600 dark:bg-blue-700 text-white font-semibold border-none last:rounded-tr-lg">Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-apt>
+              <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors border-b border-surface-100 dark:border-surface-800 last:border-0">
+                <td class="py-3">
+                  <div class="flex items-center gap-3">
+                    <p-avatar [image]="apt.patientImg || 'https://ui-avatars.com/api/?name=' + apt.patientName" shape="circle"></p-avatar>
+                    <span class="font-medium text-surface-900 dark:text-surface-0">{{ apt.patientName }}</span>
                   </div>
                 </td>
-                <td class="text-surface-600 dark:text-surface-400">{{ appointment.doctor }}</td>
-                <td class="text-surface-600 dark:text-surface-400">
-                  <i class="pi pi-clock text-xs mr-1"></i>
-                  {{ appointment.time }}
+                <td class="py-3">
+                  <div class="flex items-center gap-2">
+                    <p-avatar [image]="apt.doctorImg || 'https://ui-avatars.com/api/?name=' + apt.doctorName" shape="circle" size="normal"></p-avatar>
+                    <span class="text-surface-600 dark:text-surface-400">Dr. {{ apt.doctorName }}</span>
+                  </div>
                 </td>
-                <td>
-                    <p-tag [value]="appointment.status" [severity]="getStatusSeverity(appointment.status)" [rounded]="true"></p-tag>
+                <td class="text-surface-600 dark:text-surface-400 font-medium py-3">
+                  <i class="pi pi-clock text-xs mr-1 text-blue-500"></i>
+                  {{ apt.time }}
                 </td>
-            </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-
-  <!-- Quick Actions / Notifications -->
-  <div class="col-span-12 lg:col-span-4">
-    <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 h-full border border-surface-200 dark:border-surface-700">
-      <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-6">Notifications</h3>
-      
-      <div class="space-y-4">
-        <div class="flex gap-4 p-3 rounded-xl hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors cursor-pointer">
-          <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
-            <i class="pi pi-user-plus"></i>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-surface-900 dark:text-surface-0">New Doctor Registration</p>
-            <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">Dr. Sarah Smith requested to join.</p>
-            <p class="text-xs text-blue-500 mt-2 font-medium">2 mins ago</p>
-          </div>
+                <td class="text-amber-500 dark:text-amber-400 font-bold text-right py-3">
+                  ${{ apt.pricePaid }}
+                </td>
+                <td class="py-3">
+                  <p-tag [value]="getAppointmentStatusName(apt.status)" [severity]="getAppointmentSeverity(apt.status)" [rounded]="true"></p-tag>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
+      </div>
 
-        <div class="flex gap-4 p-3 rounded-xl hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors cursor-pointer">
-          <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 flex-shrink-0">
-            <i class="pi pi-check-circle"></i>
+      <!-- Popular Doctors & Top Patients Row -->
+      <div class="col-span-12 xl:col-span-6 2xl:col-span-4">
+        <div class="bg-white dark:bg-surface-900 shadow-sm rounded-2xl p-6 border border-surface-200 dark:border-surface-700">
+          <div class="flex  gap-3 flex-col items-start justify-between mb-5">
+            <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">Popular Doctors</h3>
+            <div class="flex mx-auto bg-surface-100 dark:bg-surface-800 rounded-lg p-1">
+              <button (click)="popularDoctorsTab.set('weekly')" [class.bg-white]="popularDoctorsTab() === 'weekly'" [class.dark:bg-surface-700]="popularDoctorsTab() === 'weekly'" [class.shadow]="popularDoctorsTab() === 'weekly'" class="px-3 py-1 text-xs font-medium rounded-md transition-all text-surface-700 dark:text-surface-300">Weekly</button>
+              <button (click)="popularDoctorsTab.set('monthly')" [class.bg-white]="popularDoctorsTab() === 'monthly'" [class.dark:bg-surface-700]="popularDoctorsTab() === 'monthly'" [class.shadow]="popularDoctorsTab() === 'monthly'" class="px-3 py-1 text-xs font-medium rounded-md transition-all text-surface-700 dark:text-surface-300">Monthly</button>
+              <button (click)="popularDoctorsTab.set('yearly')" [class.bg-white]="popularDoctorsTab() === 'yearly'" [class.dark:bg-surface-700]="popularDoctorsTab() === 'yearly'" [class.shadow]="popularDoctorsTab() === 'yearly'" class="px-3 py-1 text-xs font-medium rounded-md transition-all text-surface-700 dark:text-surface-300">Yearly</button>
+            </div>
           </div>
-          <div>
-            <p class="text-sm font-medium text-surface-900 dark:text-surface-0">Appointment Confirmed</p>
-            <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">Karim Mahmoud confirmed for 10:00 AM.</p>
-            <p class="text-xs text-blue-500 mt-2 font-medium">1 hour ago</p>
-          </div>
-        </div>
 
-        <div class="flex gap-4 p-3 rounded-xl hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors cursor-pointer">
-          <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0">
-            <i class="pi pi-wallet"></i>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-surface-900 dark:text-surface-0">Payment Received</p>
-            <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">Received $150 from Ammar Ahmed.</p>
-            <p class="text-xs text-blue-500 mt-2 font-medium">3 hours ago</p>
+          <div class="space-y-3">
+            @for (doc of dash.popularDoctors[popularDoctorsTab()]; track doc.Id; let i = $index) {
+              <div class="flex items-center gap-4 p-3 rounded-2xl bg-surface-50 dark:bg-surface-800/50 border border-surface-100 dark:border-surface-800 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/40 dark:hover:bg-blue-900/10 transition-all duration-200 group">
+
+                <!-- Rank Badge -->
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm shrink-0"
+                  [ngClass]="i === 0 ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400' :
+                             i === 1 ? 'bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-300' :
+                                       'bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400'">#{{ i + 1 }}</div>
+
+                <!-- Avatar -->
+                <div class="relative shrink-0">
+                  <p-avatar [image]="doc.img || 'https://ui-avatars.com/api/?name=' + doc.Name" size="large" shape="circle"
+                    styleClass="ring-2 ring-surface-200 dark:ring-surface-700 group-hover:ring-blue-400 transition-all"></p-avatar>
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-bold text-sm text-surface-900 dark:text-surface-0 truncate">Dr. {{ doc.Name }}</h4>
+                  <p class="text-xs text-surface-500 dark:text-surface-400 truncate">{{ doc.department }}</p>
+                </div>
+
+                <!-- Bookings Pill -->
+                <div class="shrink-0 flex flex-col items-center bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-xl px-4 py-2 min-w-[64px]">
+                  <span class="text-blue-600 dark:text-blue-400 font-bold text-base leading-none">{{ doc.bookings }}</span>
+                  <span class="text-[10px] text-blue-400 dark:text-blue-500 uppercase tracking-wider mt-0.5">Bookings</span>
+                </div>
+
+              </div>
+            }
           </div>
         </div>
       </div>
 
-      <div class="mt-6 pt-6 border-t border-surface-100 dark:border-surface-800">
-        <p-button label="View All Notifications" styleClass="w-full p-button-outlined p-button-secondary"></p-button>
-      </div>
     </div>
-  </div>
-</div>
+  }
+}
