@@ -167,7 +167,7 @@
                   </div>
                   
                   <div>
-                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize">Dr. {{ doctor.Name }}</h4>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors" [routerLink]="['/doctors', doctor.Id]">Dr. {{ doctor.Name }}</h4>
                     <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ doctor.departmentName }}</p>
                   </div>
                 </div>
@@ -229,7 +229,7 @@
                   <div class="w-8 text-center font-bold text-surface-400 dark:text-surface-600 group-hover:text-blue-500 transition-colors">#{{ i + 1 }}</div>
                   <p-avatar [image]="patient.img || 'https://ui-avatars.com/api/?name=' + patient.Name" size="large" shape="circle" styleClass="shadow-sm"></p-avatar>
                   <div>
-                    <h4 class="font-bold text-surface-900 dark:text-surface-0 mb-1">{{ patient.Name }}</h4>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 mb-1 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors" [routerLink]="['/patients', patient.Id]">{{ patient.Name }}</h4>
                     <div class="font-semibold text-[11px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-md flex items-center gap-1 w-fit">
                       <i class="pi pi-calendar text-[10px]"></i>
                       {{ patient.appointments }} Appointments
@@ -269,7 +269,7 @@
                   <p-avatar [image]="doctor.img || 'https://ui-avatars.com/api/?name=' + doctor.Name" size="large" shape="circle" styleClass="shadow-sm border border-surface-100 dark:border-surface-700"></p-avatar>
                   
                   <div>
-                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize">Dr. {{ doctor.Name }}</h4>
+                    <h4 class="font-bold text-surface-900 dark:text-surface-0 capitalize cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors" [routerLink]="['/doctors', doctor.Id]">Dr. {{ doctor.Name }}</h4>
                     <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ doctor.departmentName }}</p>
                   </div>
                 </div>
@@ -316,7 +316,7 @@
                 <td class="py-3">
                   <div class="flex items-center gap-2">
                     <p-avatar [image]="apt.doctorImg || 'https://ui-avatars.com/api/?name=' + apt.doctorName" shape="circle" size="normal"></p-avatar>
-                    <span class="text-surface-600 dark:text-surface-400">Dr. {{ apt.doctorName }}</span>
+                    <span class="text-surface-600 dark:text-surface-400 font-semibold cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors" [routerLink]="['/doctors', apt.doctorId]">Dr. {{ apt.doctorName }}</span>
                   </div>
                 </td>
                 <td class="text-surface-600 dark:text-surface-400 font-medium py-3">
@@ -365,7 +365,7 @@
 
                 <!-- Info -->
                 <div class="flex-1 min-w-0">
-                  <h4 class="font-bold text-sm text-surface-900 dark:text-surface-0 truncate">Dr. {{ doc.Name }}</h4>
+                  <h4 class="font-bold text-sm text-surface-900 dark:text-surface-0 truncate cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors" [routerLink]="['/doctors', doc.Id]">Dr. {{ doc.Name }}</h4>
                   <p class="text-xs text-surface-500 dark:text-surface-400 truncate">{{ doc.department }}</p>
                 </div>
 

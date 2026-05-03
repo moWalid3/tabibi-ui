@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -19,7 +20,7 @@ import { IAnalyticsDashboard, AppointmentStatus, IChartDataPoint } from '../../c
   standalone: true,
   imports: [
     CommonModule, CardModule, TableModule, ButtonModule, FormsModule, 
-    TagModule, ChartModule, AvatarModule, RatingModule, ProgressBarModule
+    TagModule, ChartModule, AvatarModule, RatingModule, ProgressBarModule, RouterLink
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
