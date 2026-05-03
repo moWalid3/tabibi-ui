@@ -12,6 +12,7 @@ import { environment } from '../../../../environments/environment';
 export class Doctors {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
+  private renderApiUrl = 'https://api-tabibi-admin-panel-1.onrender.com/api';
 
   getAllDoctors(params?: any) {
     return this.http.get<IResponseCollection<IDoctorDto>>(`${this.baseUrl}/admin/doctors`, {
@@ -37,5 +38,13 @@ export class Doctors {
 
   updateDoctorStatus(id: string, status: number) {
     return this.http.put(`${this.baseUrl}/admin/doctors/${id}`, { status });
+  }
+
+  getDoctorsOverview(params?: any) {
+    return this.http.get<any>(`${this.renderApiUrl}/users/doctors/page/overview`, { params });
+  }
+
+  getDoctorDetails(id: string) {
+    return this.http.get<any>(`${this.renderApiUrl}/users/doctors/page/details/${id}`);
   }
 }

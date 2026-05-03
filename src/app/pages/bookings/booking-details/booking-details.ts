@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Doctors as DoctorsService } from '../../../core/services/doctors/doctors';
+import { BookingsService } from '../../../core/services/bookings/bookings';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
@@ -9,72 +9,53 @@ import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 
 @Component({
-  selector: 'app-doctor-details',
-  templateUrl: './doctor-details.html',
-  styleUrl: './doctor-details.scss',
+  selector: 'app-booking-details',
+  templateUrl: './booking-details.html',
+  styleUrl: './booking-details.scss',
   standalone: true,
   imports: [CommonModule, ButtonModule, CardModule, RatingModule, FormsModule, TagModule]
 })
-export class DoctorDetails implements OnInit {
+export class BookingDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private doctorsService = inject(DoctorsService);
+  private bookingsService = inject(BookingsService);
 
-  doctor = signal<any>(null);
+  booking = signal<any>(null);
   loading = signal(true);
-
-  DayOfWeekMap: { [key: number]: string } = {
-    0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday',
-    4: 'Thursday', 5: 'Friday', 6: 'Saturday'
-  };
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.loadDoctorDetails(id);
+      this.loadBookingDetails(id);
     } else {
-      this.router.navigate(['/doctors']);
+      this.router.navigate(['/appointments']);
     }
   }
 
-  loadDoctorDetails(id: string) {
+  loadBookingDetails(id: string) {
     this.loading.set(true);
-    this.doctorsService.getDoctorDetails(id).subscribe({
+    this.bookingsService.getBookingDetails(id).subscribe({
       next: (data: any) => {
-        this.doctor.set(data);
+        this.booking.set(data);
         this.loading.set(false);
       },
       error: (err: any) => {
-        console.error('Error fetching doctor details:', err);
+        console.error('Error fetching booking details:', err);
         this.loading.set(false);
       }
     });
   }
 
   goBack() {
-    this.router.navigate(['/doctors']);
+    this.router.navigate(['/appointments']);
   }
 
-  viewAllReviews() {
-    const id = this.doctor()?.id;
-    if (id) {
-      this.router.navigate(['/reviews'], { queryParams: { doctorId: id } });
-    }
+  viewPatient(id: string) {
+    this.router.navigate(['/patients', id]);
   }
 
-  viewAllBookings() {
-    const id = this.doctor()?.id;
-    if (id) {
-      this.router.navigate(['/appointments'], { queryParams: { doctorId: id } });
-    }
-  }
-
-  viewTodayBookings() {
-    const id = this.doctor()?.id;
-    if (id) {
-      const today = new Date().toISOString().split('T')[0];
-      this.router.navigate(['/appointments'], { queryParams: { doctorId: id, startDate: today, endDate: today } });
-    }
+  viewDoctor(id: string) {
+    this.router.navigate(['/doctors', id]);
   }
 
   getBookingStatusSeverity(status: number): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
@@ -103,7 +84,7 @@ export class DoctorDetails implements OnInit {
     return type === 0 ? 'Clinic' : 'Video Call';
   }
 
-  getDayName(day: number): string {
-    return this.DayOfWeekMap[day] || 'Unknown';
+  getGenderLabel(gender: number): string {
+    return gender === 1 ? 'Male' : gender === 2 ? 'Female' : 'Unknown';
   }
 }

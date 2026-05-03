@@ -1,166 +1,106 @@
-<div class="mb-8 flex flex-col items-center">
-  <h1 class="text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-2 tracking-tight">
-    Doctors Directory
-  </h1>
-  <p class="text-surface-500 dark:text-surface-400 text-lg font-medium">Manage and view all registered doctors</p>
-</div>
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 dark:from-blue-400 to-purple-600 dark:to-purple-500">Doctors Directory</h1>
+      <p class="text-surface-600 dark:text-gray-400 mt-2">Find and manage medical professionals</p>
+    </div>
+  </div>
 
-<div class="card mb-5">
   <!-- Filters -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-4">
-    <p-iconfield iconPosition="left" class="w-full">
-      <p-inputicon styleClass="pi pi-search" />
-      <input pInputText type="text" [ngModel]="searchValue()" (input)="onSearch($any($event.target).value)" placeholder="Search by name..." class="w-full" />
-    </p-iconfield>
-
-    <p-select
-      [options]="departments()"
-      [(ngModel)]="selectedDepartment"
-      optionLabel="name"
-      placeholder="Select Department"
-      (onChange)="reloadTable(dt)"
-      [showClear]="true"
-      styleClass="w-full"
-      [filter]="true"
-      filterBy="name">
-    </p-select>
-
-    <p-select
-      [options]="cities()"
-      [(ngModel)]="selectedCity"
-      optionLabel="name"
-      placeholder="Select City"
-      (onChange)="reloadTable(dt)"
-      [showClear]="true"
-      styleClass="w-full"
-      [filter]="true"
-      filterBy="name">
-    </p-select>
-
-    <p-select
-      [options]="genderOptions"
-      [(ngModel)]="selectedGender"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Select Gender"
-      (onChange)="reloadTable(dt)"
-      [showClear]="true"
-      styleClass="w-full">
-    </p-select>
-
-    <p-select
-      [options]="statusOptions"
-      [(ngModel)]="selectedStatus"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Select Status"
-      (onChange)="reloadTable(dt)"
-      [showClear]="true"
-      styleClass="w-full">
-    </p-select>
-
-    <p-select
-      [options]="emailConfirmedOptions"
-      [(ngModel)]="selectedEmailConfirmed"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Email Confirmed"
-      (onChange)="reloadTable(dt)"
-      [showClear]="true"
-      styleClass="w-full">
-    </p-select>
+  <div class="bg-white dark:bg-[#1e1e2d] rounded-xl p-4 mb-6 border border-surface-200 dark:border-white/5 flex flex-wrap gap-4 items-center">
+    <div class="flex-1 min-w-[250px]">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search"></p-inputicon>
+        <input pInputText type="text" [ngModel]="searchValue()" (ngModelChange)="onSearch($event)" placeholder="Search by doctor name..." class="w-full bg-surface-50 dark:bg-[#151521] border-surface-200 dark:border-white/10 text-surface-900 dark:text-white" />
+      </p-iconfield>
+    </div>
+    <div class="w-full md:w-64">
+      <p-select [options]="cities()" [(ngModel)]="selectedCity" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Filter by City" (onChange)="onFilterChange()" styleClass="w-full bg-surface-50 dark:bg-[#151521] border-surface-200 dark:border-white/10 text-surface-900 dark:text-white"></p-select>
+    </div>
+    <div class="w-full md:w-64">
+      <p-select [options]="departments()" [(ngModel)]="selectedDepartment" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Filter by Department" (onChange)="onFilterChange()" styleClass="w-full bg-surface-50 dark:bg-[#151521] border-surface-200 dark:border-white/10 text-surface-900 dark:text-white"></p-select>
+    </div>
   </div>
 
-  <!-- Custom Sort -->
-  <div class="flex flex-col md:flex-row gap-4 mb-4 items-center">
-    <p-select
-      [options]="sortOptions"
-      [(ngModel)]="selectedSortField"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Sort By"
-      [showClear]="true"
-      styleClass="w-full md:w-60">
-    </p-select>
+  <!-- Data Table -->
+  <div class="bg-white dark:bg-[#1e1e2d] rounded-xl border border-surface-200 dark:border-white/5 overflow-hidden shadow-sm dark:shadow-2xl">
+    <p-table #dt [value]="doctors()" [lazy]="true" (onLazyLoad)="loadDoctors($event)" dataKey="id"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [paginator]="true" [rows]="10" [totalRecords]="totalRecords()" [loading]="loading()"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="p-datatable-sm custom-table">
+      
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Doctor</th>
+          <th>Location & Dept</th>
+          <th pSortableColumn="fee">Fee <p-sortIcon field="fee"></p-sortIcon></th>
+          <th pSortableColumn="yearsOfExperience">Exp <p-sortIcon field="yearsOfExperience"></p-sortIcon></th>
+          <th pSortableColumn="rating">Rating <p-sortIcon field="rating"></p-sortIcon></th>
+          <th pSortableColumn="reviewCount">Reviews <p-sortIcon field="reviewCount"></p-sortIcon></th>
+          <th pSortableColumn="completedBookingCount">Bookings <p-sortIcon field="completedBookingCount"></p-sortIcon></th>
+          <th pSortableColumn="totalPaid">Total Paid <p-sortIcon field="totalPaid"></p-sortIcon></th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </ng-template>
 
-    <div class="flex items-center gap-2">
-      <span class="text-sm font-medium">Desc</span>
-      <p-toggleswitch [(ngModel)]="sortDescending"></p-toggleswitch>
-    </div>
+      <ng-template pTemplate="body" let-doc>
+        <tr class="hover:bg-surface-100 dark:hover:bg-white/5 transition-colors group">
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center border-2 border-white dark:border-[#1e1e2d] group-hover:border-blue-400 transition-colors">
+                <img *ngIf="doc.avatar" [src]="doc.avatar" [alt]="doc.name" class="w-full h-full object-cover" />
+                <span *ngIf="!doc.avatar" class="text-surface-900 dark:text-white font-bold text-sm">{{doc.name.charAt(0) | uppercase}}</span>
+              </div>
+              <div>
+                <div class="font-semibold text-surface-900 dark:text-gray-100 cursor-pointer hover:text-blue-600 dark:text-blue-400 transition-colors" (click)="viewDetails(doc.id)">{{ doc.name }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-col">
+              <span class="text-surface-700 dark:text-gray-300 font-medium">{{ doc.dept || 'General' }}</span>
+              <span class="text-surface-500 dark:text-gray-400 text-xs"><i class="pi pi-map-marker mr-1 text-surface-600"></i>{{ doc.city || 'N/A' }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="font-medium text-emerald-600 dark:text-emerald-400">{{ doc.fee | currency:'USD' }}</div>
+          </td>
+          <td>
+            <span class="text-surface-700 dark:text-gray-300">{{ doc.yearsOfExperience }} yrs</span>
+          </td>
+          <td>
+            <div class="flex items-center gap-2">
+              <p-rating [(ngModel)]="doc.rating" [readonly]="true" [stars]="5" class="text-yellow-600 dark:text-yellow-400"></p-rating>
+              <span class="text-sm text-surface-600 dark:text-gray-400">({{ doc.rating | number:'1.1-1' }})</span>
+            </div>
+          </td>
+          <td>
+            <p-tag [value]="doc.reviewCount.toString()" [severity]="doc.reviewCount > 0 ? 'info' : 'secondary'" [rounded]="true"></p-tag>
+          </td>
+          <td>
+            <div class="font-medium text-blue-600 dark:text-blue-400">{{ doc.completedBookingCount }}</div>
+          </td>
+          <td>
+            <div class="font-medium text-emerald-600 dark:text-green-400">{{ doc.totalPaid | currency:'USD' }}</div>
+          </td>
+          <td class="text-right">
+            <p-button icon="pi pi-eye" [rounded]="true" [text]="true" severity="info" (onClick)="viewDetails(doc.id)" pTooltip="View Details"></p-button>
+          </td>
+        </tr>
+      </ng-template>
 
-    <p-button label="Add" icon="pi pi-plus" (click)="addSort()" [disabled]="!selectedSortField()"></p-button>
-    <p-button label="Apply" icon="pi pi-check" (click)="applySort()" severity="success"></p-button>
-    <p-button label="Clear" icon="pi pi-times" (click)="clearSorts()" severity="secondary" [disabled]="activeSorts().length === 0"></p-button>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center p-8">
+            <div class="flex flex-col items-center justify-center text-surface-500 dark:text-gray-400">
+              <i class="pi pi-inbox text-4xl mb-4"></i>
+              <p class="text-lg">No doctors found</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-
-  <!-- Active Sorts -->
-  @if (activeSorts().length > 0) {
-    <div class="flex flex-wrap gap-2 mb-4">
-      @for (sort of activeSorts(); track sort) {
-        <p-chip
-          [label]="sort.label + (sort.desc ? ' (Desc)' : ' (Asc)')"
-          [removable]="true"
-          (onRemove)="removeSort(sort.field)">
-        </p-chip>
-      }
-    </div>
-  }
-
-  <p-table
-    #dt
-    [value]="doctors()"
-    [paginator]="true"
-    [rows]="10"
-    [lazy]="true"
-    (onLazyLoad)="loadDoctors($event)"
-    [totalRecords]="totalRecords()"
-    [loading]="loading()"
-    [showCurrentPageReport]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [rowsPerPageOptions]="[10, 20, 50]"
-    styleClass="p-datatable-gridlines border border-surface-200 dark:border-surface-700 rounded-xl overflow-hidden shadow-sm"
-    paginatorDropdownAppendTo="body"
-    >
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Avatar</th>
-        <th style="width:15%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Name</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Gender</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">DOB</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Fee</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Exp</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">City</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Dept</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Status</th>
-        <th style="width:10%" class="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-900/30 font-semibold text-blue-900 dark:text-blue-100">Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-doctor>
-      <tr class="border-b border-surface-100 dark:border-surface-800">
-        <td>
-          <img [src]="doctor.avatarUrl ? doctor.avatarUrl : '/person.png'" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
-        </td>
-        <td>{{ doctor.name }}</td>
-        <td>{{ doctor.gender === Gender.Male ? 'Male' : doctor.gender === Gender.Female ? 'Female' : 'Unknown' }}</td>
-        <td>{{ doctor.dateOfBirth | date }}</td>
-        <td>{{ doctor.consultationFee | currency }}</td>
-        <td>{{ doctor.yearsOfExperience }}</td>
-        <td>{{ doctor.city }}</td>
-        <td>{{ doctor.department }}</td>
-        <td>
-          <p-tag [value]="doctor.status" [severity]="doctor.status === 'Approved' ? 'success' : (doctor.status === 'Rejected' ? 'danger' : (doctor.status === 'Pending' ? 'warn' : 'info'))"></p-tag>
-        </td>
-        <td>
-          <div class="flex gap-2">
-            <p-button icon="pi pi-eye" [rounded]="true" [text]="true" severity="info" (onClick)="viewDetails(doctor.id)"></p-button>
-            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteDoctor($event, doctor)"></p-button>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
 </div>
-
-<p-confirmDialog></p-confirmDialog>
-<p-toast></p-toast>

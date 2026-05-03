@@ -18,6 +18,26 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
+        path: 'all-doctors',
+        loadComponent: () => import('./pages/all-doctors/all-doctors').then((m) => m.AllDoctors),
+      },
+      {
+        path: 'all-doctors/:id',
+        loadComponent: () => import('./pages/all-doctors/all-doctor-details/all-doctor-details').then((m) => m.AllDoctorDetails),
+      },
+      {
+        path: 'all-patients',
+        loadComponent: () => import('./pages/all-patients/all-patients').then((m) => m.AllPatients),
+      },
+      {
+        path: 'patients',
+        loadComponent: () => import('./pages/patients/patients').then((m) => m.Patients),
+      },
+      {
+        path: 'patients/:id',
+        loadComponent: () => import('./pages/patients/patient-details/patient-details').then((m) => m.PatientDetails),
+      },
+      {
         path: 'doctors',
         loadComponent: () => import('./pages/doctors/doctors').then((m) => m.Doctors),
       },
@@ -26,8 +46,16 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/doctors/doctor-details/doctor-details').then((m) => m.DoctorDetails),
       },
       {
-        path: 'patients',
-        loadComponent: () => import('./pages/patients/patients').then((m) => m.Patients),
+        path: 'appointments',
+        loadComponent: () => import('./pages/bookings/bookings').then((m) => m.Bookings),
+      },
+      {
+        path: 'appointments/:id',
+        loadComponent: () => import('./pages/bookings/booking-details/booking-details').then((m) => m.BookingDetails),
+      },
+      {
+        path: 'reviews',
+        loadComponent: () => import('./pages/reviews/reviews').then((m) => m.Reviews),
       },
       {
         path: 'departments',

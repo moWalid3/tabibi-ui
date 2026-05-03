@@ -22,12 +22,12 @@ export class Sidebar {
     { label: 'Dashboard', icon: 'pi pi-home', route: '/dashboard' },
     { label: 'Patients', icon: 'pi pi-users', route: '/patients' },
     { label: 'Doctors', icon: 'pi pi-id-card', route: '/doctors' },
+    { label: 'Appointments', icon: 'pi pi-calendar', route: '/appointments' },
+    { label: 'Reviews', icon: 'pi pi-star', route: '/reviews' },
+    { label: 'All Patients', icon: 'pi pi-users', route: '/all-patients' },
+    { label: 'All Doctors', icon: 'pi pi-id-card', route: '/all-doctors' },
     { label: 'Departments', icon: 'pi pi-building', route: '/departments' },
     { label: 'Cities', icon: 'pi pi-map-marker', route: '/cities' },
-    { label: 'Services', icon: 'pi pi-briefcase', route: '/services' },
-    { label: 'Appointments', icon: 'pi pi-calendar', route: '/appointments' },
-    { label: 'Treasury', icon: 'pi pi-wallet', route: '/treasury' },
-    { label: 'Notifications', icon: 'pi pi-bell', route: '/notifications' },
-    { label: 'Settings', icon: 'pi pi-cog', route: '/settings' },
+
   ];
 }

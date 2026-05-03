@@ -1,0 +1,61 @@
+:host {
+  ::ng-deep {
+    .custom-table {
+      .p-datatable-header,
+      .p-datatable-thead > tr > th,
+      .p-datatable-tbody > tr > td,
+      .p-paginator {
+        background-color: transparent !important;
+        border-color: var(--p-surface-200) !important;
+        color: var(--p-surface-700);
+      }
+
+      .p-datatable-thead > tr > th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .p-paginator {
+        border-top: 1px solid var(--p-surface-200) !important;
+      }
+
+      .p-sortable-column:hover {
+        background-color: var(--p-surface-50) !important;
+        color: #000 !important;
+      }
+
+      .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+        color: #eab308;
+      }
+    }
+    
+  }
+}
+
+:host-context(.my-app-dark) {
+  ::ng-deep {
+    .custom-table {
+      .p-datatable-header,
+      .p-datatable-thead > tr > th,
+      .p-datatable-tbody > tr > td,
+      .p-paginator {
+        border-color: rgba(255, 255, 255, 0.05) !important;
+        color: #e2e8f0;
+      }
+
+      .p-paginator {
+        border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+
+      .p-sortable-column:hover {
+        background-color: rgba(255, 255, 255, 0.02) !important;
+        color: #fff !important;
+      }
+    }
+    
+  }
+}

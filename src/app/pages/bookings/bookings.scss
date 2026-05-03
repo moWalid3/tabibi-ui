@@ -33,6 +33,25 @@
       }
     }
     
+    .p-datepicker {
+      background: #ffffff;
+      border: 1px solid var(--p-surface-200);
+      color: var(--p-surface-700);
+      
+      .p-datepicker-header {
+        background: var(--p-surface-50);
+        color: var(--p-surface-700);
+      }
+      
+      .p-datepicker-calendar td > span {
+        color: var(--p-surface-700);
+        
+        &.p-highlight {
+          background: #3b82f6;
+          color: white;
+        }
+      }
+    }
   }
 }
 
@@ -57,5 +76,19 @@
       }
     }
     
+    .p-datepicker {
+      background: #1e1e2d;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #e2e8f0;
+      
+      .p-datepicker-header {
+        background: #151521;
+        color: #e2e8f0;
+      }
+      
+      .p-datepicker-calendar td > span {
+        color: #e2e8f0;
+      }
+    }
   }
 }

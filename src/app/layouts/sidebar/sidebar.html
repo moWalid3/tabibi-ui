@@ -1,13 +1,13 @@
 <div class="flex flex-col h-screen bg-transparent transition-all duration-300 text-white overflow-hidden"
-  [ngClass]="{'w-48': !isCollapsed(), 'w-20': isCollapsed()}">
+  [ngClass]="{'w-44': !isCollapsed(), 'w-16': isCollapsed()}">
 
   <!-- Header / Toggle -->
   <div class="flex items-center justify-between p-4 h-16">
     @if (!isCollapsed()) {
-      <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <img src="logo.png" alt="Logo" class="h-8 w-auto brightness-0 invert">
-        <span class="font-bold text-xl text-white">Tabibi</span>
-      </div>
+      <a routerLink="/dashboard" class="flex items-center gap-2 overflow-hidden whitespace-nowrap cursor-pointer group">
+        <img src="logo.png" alt="Logo" class="h-8 w-auto brightness-0 invert group-hover:scale-105 transition-transform duration-200">
+        <span class="font-bold text-xl text-white group-hover:text-blue-100 transition-colors duration-200">Tabibi</span>
+      </a>
     }
     <div class="flex justify-center" [ngClass]="{'w-full': isCollapsed()}">
       <p-button (click)="toggleSidebar()" [icon]="isCollapsed() ? 'pi pi-angle-right' : 'pi pi-angle-left'" [text]="true" [rounded]="true" styleClass="text-white hover:bg-white/10"></p-button>

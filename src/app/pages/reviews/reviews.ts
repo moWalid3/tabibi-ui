@@ -1,43 +1,50 @@
 import { Component, inject, signal, ViewChild, OnInit } from '@angular/core';
 import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
-import { Router } from '@angular/router';
-import { Patients as PatientsService } from '../../core/services/patients/patients';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReviewsService } from '../../core/services/reviews/reviews';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { RatingModule } from 'primeng/rating';
+import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 
 @Component({
-  selector: 'app-patients',
-  templateUrl: './patients.html',
-  styleUrl: './patients.scss',
+  selector: 'app-reviews',
+  templateUrl: './reviews.html',
+  styleUrl: './reviews.scss',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, FormsModule, IconFieldModule, InputIconModule, InputTextModule, SelectModule, RatingModule, TagModule]
+  imports: [TableModule, CommonModule, FormsModule, IconFieldModule, InputIconModule, InputTextModule, RatingModule, ButtonModule, TagModule]
 })
-export class Patients implements OnInit {
+export class Reviews implements OnInit {
   @ViewChild('dt') dt!: Table;
-  private patientsService = inject(PatientsService);
+  private reviewsService = inject(ReviewsService);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  patients = signal<any[]>([]);
+  reviews = signal<any[]>([]);
   totalRecords = signal(0);
   loading = signal(false);
 
   // Filters
   searchValue = signal('');
   private searchSubject = new Subject<string>();
-  selectedCity = signal<any>(null);
-  cities = signal<any[]>([]);
+  patientIdParam = signal<string | null>(null);
+  doctorIdParam = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.loadCities();
+    this.route.queryParams.subscribe(params => {
+      if (params['patientId']) this.patientIdParam.set(params['patientId']);
+      if (params['doctorId']) this.doctorIdParam.set(params['doctorId']);
+      
+      // reload table if it was already initialized
+      setTimeout(() => this.reloadTable(), 0);
+    });
+
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -47,19 +54,11 @@ export class Patients implements OnInit {
     });
   }
 
-  loadCities() {
-    this.patientsService.getCities().subscribe(data => this.cities.set(data));
-  }
-
   onSearch(value: string) {
     this.searchSubject.next(value);
   }
 
-  onFilterChange() {
-    this.reloadTable();
-  }
-
-  loadPatients(event: TableLazyLoadEvent) {
+  loadReviews(event: TableLazyLoadEvent) {
     this.loading.set(true);
 
     const page = (event.first ?? 0) / (event.rows ?? 10) + 1;
@@ -69,7 +68,7 @@ export class Patients implements OnInit {
     let sortOrder = '';
 
     if (event.sortField) {
-      sortBy = event.sortField as string;
+      sortBy = event.sortField as string; // Will usually be 'rating'
       sortOrder = event.sortOrder === 1 ? 'ASC' : 'DESC';
     }
 
@@ -79,21 +78,23 @@ export class Patients implements OnInit {
     };
 
     if (this.searchValue()) params.search = this.searchValue();
-    if (this.selectedCity()?.id) params.cityId = this.selectedCity().id;
+    if (this.patientIdParam()) params.patientId = this.patientIdParam();
+    if (this.doctorIdParam()) params.doctorId = this.doctorIdParam();
+    
     if (sortBy) {
       params.sortBy = sortBy;
       params.sortOrder = sortOrder;
     }
 
-    this.patientsService.getPatientsOverview(params).subscribe({
+    this.reviewsService.getReviewsOverview(params).subscribe({
       next: (response) => {
         const result = response.JsonResult;
-        this.patients.set(result.data);
+        this.reviews.set(result.data);
         this.totalRecords.set(result.totalCount);
         this.loading.set(false);
       },
       error: (error) => {
-        console.error('Error fetching patients:', error);
+        console.error('Error fetching reviews:', error);
         this.loading.set(false);
       }
     });
@@ -105,7 +106,23 @@ export class Patients implements OnInit {
     }
   }
 
-  viewDetails(id: string) {
+  viewDoctor(id: string) {
+    this.router.navigate(['/doctors', id]);
+  }
+
+  viewPatient(id: string) {
     this.router.navigate(['/patients', id]);
+  }
+
+  clearFilters() {
+    this.searchValue.set('');
+    this.patientIdParam.set(null);
+    this.doctorIdParam.set(null);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true
+    });
+    this.reloadTable();
   }
 }
